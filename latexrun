@@ -31,7 +31,6 @@ import re
 import collections
 import hashlib
 import shutil
-import curses
 import filecmp
 import io
 import traceback
@@ -384,6 +383,13 @@ hash_cache = HashCache()
 
 class _Terminfo:
     def __init__(self):
+        try:
+            import curses
+        except:
+            self.__tty = None
+            self.__ti = {}
+            return
+
         self.__tty = os.isatty(sys.stdout.fileno())
         if self.__tty:
             curses.setupterm()
